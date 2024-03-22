@@ -18,12 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.rendonsoft.apptestapi.R
 import com.rendonsoft.apptestapi.commos.database.database.AppDatabase
-import com.rendonsoft.apptestapi.commos.database.models.AutoDto
-import com.rendonsoft.apptestapi.commos.util.AUTOS
+import com.rendonsoft.apptestapi.commos.network.Network
 import com.rendonsoft.apptestapi.commos.util.URL_BASE
 import com.rendonsoft.apptestapi.feature.home.domain.models.AutoItem
+import com.rendonsoft.apptestapi.feature.home.framework.implementation.data.data_source.AutosLocalDataSourceImpl
+import com.rendonsoft.apptestapi.feature.home.framework.implementation.data.data_source.AutosRemoteDataSourceImpl
+import com.rendonsoft.apptestapi.feature.home.framework.implementation.data.repository.AutosRepositoryImpl
 import com.rendonsoft.apptestapi.feature.home.framework.presentation.screen.composables.CardItem
-import fetchData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -31,20 +32,11 @@ import kotlinx.coroutines.withContext
 @Composable
 fun HomePage(modifier: Modifier) {
 
-    var responseData by remember { mutableStateOf<List<AutoItem>>(emptyList()) }
+    var autosData by remember { mutableStateOf<List<AutoItem>>(emptyList()) }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        val list = getAutos(context = context)
-
-        if (list.isEmpty()) {
-            val url = "$URL_BASE$AUTOS"
-            val response = fetchData(url)
-            insertUser(response, context)
-            responseData = response
-        } else {
-            responseData = list
-        }
+        autosData = getData(context = context)
     }
 
     Scaffold(
@@ -58,41 +50,24 @@ fun HomePage(modifier: Modifier) {
         }
     ) {
         LazyColumn(modifier = modifier.padding(it)) {
-            items(responseData.size) { index ->
+            items(autosData.size) { index ->
                 CardItem(
-                    item = responseData[index]
+                    item = autosData[index]
                 )
             }
         }
     }
 }
 
-suspend fun insertUser(
-    autos: List<AutoItem>,
-    context: Context,
-) {
-    withContext(Dispatchers.IO) {
-
-        val list = autos.map { item -> AutoDto(name = item.codigo, code = item.codigo) }
-            .toTypedArray()
-        val db = AppDatabase.getInstance(context)
-        db.autoDao()
-            .insertAuto(
-                autos = list
-            )
-    }
-}
-
-suspend fun getAutos(
+suspend fun getData(
     context: Context,
 ): List<AutoItem> {
     return withContext(Dispatchers.IO) {
-        val db = AppDatabase.getInstance(context)
-        db.autoDao().getAutos().map {
-            AutoItem(
-                codigo = it.code,
-                nome = it.name
-            )
-        }.toList()
+        val repository = AutosRepositoryImpl(
+            AutosLocalDataSourceImpl(AppDatabase.getInstance(context)),
+            AutosRemoteDataSourceImpl(Network(URL_BASE))
+        )
+        val listNew = repository.getAutos()
+        listNew
     }
 }

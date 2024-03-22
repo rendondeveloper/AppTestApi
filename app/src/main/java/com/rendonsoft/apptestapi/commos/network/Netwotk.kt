@@ -31,5 +31,5 @@ class Network(url: String ?= null) {
         .client(httpClient.build())
         .build()
 
-    fun getInstance() = retrofit
+    fun getInstance(): Retrofit = retrofit
 }

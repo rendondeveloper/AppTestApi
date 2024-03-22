@@ -34,8 +34,8 @@ fun CardItem(
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-            Text(text = item.codigo, style = MaterialTheme.typography.labelMedium)
-            Text(text = item.nome, style = MaterialTheme.typography.labelSmall)
+            Text(text = item.code, style = MaterialTheme.typography.labelMedium)
+            Text(text = item.name, style = MaterialTheme.typography.labelSmall)
         }
 
     }
@@ -45,6 +45,6 @@ fun CardItem(
 @Composable
 fun CardItemGreetingPreview() {
     AppTestApiTheme {
-        CardItem(AutoItem(codigo = "Android", nome =  "20"))
+        CardItem(AutoItem(code = "Android", name =  "20"))
     }
 }
