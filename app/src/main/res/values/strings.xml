@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">AppTestApi</string>
+  <string name="toolbar_home">Home</string>
 </resources>

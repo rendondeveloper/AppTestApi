@@ -1,5 +1,5 @@
 import com.google.gson.Gson
-import com.rendonsoft.apptestapi.AutoItem
+import com.rendonsoft.apptestapi.feature.home.domain.models.AutoItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
