@@ -1,7 +1,7 @@
 # AppTestApi
-Este es un proyecto para demostrar el uso de koltin con Jetpack Compose, con arquitectura clean, mvvm, inyección de dependencias , buenas prácticas.
+Este es un proyecto para demostrar el uso de koltin con Jetpack Compose, con arquitectura clean, mvvm, inyección de dependencias y buenas prácticas.
 
-Este proyecto se trabajó en base a las especificaciones solo con dos ligeros cambios uno  fue no usar xml para la vista si no usar jetpack composey koin.
+Este proyecto se trabajó en base a las especificaciones con dos ligeros cambios. Uno es usar jetpack compose y otro koin.
 
 Se realizó por cada commit el cambio de proyecto de pasar de un patrón mvc a tener una estructura por features.
 
