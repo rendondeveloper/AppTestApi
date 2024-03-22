@@ -7,9 +7,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Network(url: String ?= null) {
+class Network {
 
-    private fun interceptor() : HttpLoggingInterceptor {
+    private fun interceptor(): HttpLoggingInterceptor {
         val loggingData = HttpLoggingInterceptor()
         loggingData.apply {
             level = HttpLoggingInterceptor.Level.HEADERS
@@ -23,13 +23,11 @@ class Network(url: String ?= null) {
         addInterceptor(interceptor())
     }
 
-    private val retrofit = Retrofit
+    fun getInstance(url: String?): Retrofit = Retrofit
         .Builder()
         .baseUrl(url ?: URL_BASE)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(httpClient.build())
         .build()
-
-    fun getInstance(): Retrofit = retrofit
 }
